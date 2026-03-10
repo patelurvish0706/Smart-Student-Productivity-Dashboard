@@ -31,12 +31,15 @@ let AddTask = () => {
                 </fieldset>
             </div>`
 
-    document.getElementById('AddingTaskForm').addEventListener("submit", (e) => {
+        let AddingTaskForm = document.getElementById('AddingTaskForm')
+
+        AddingTaskForm.addEventListener("submit", (e) => {
         e.preventDefault()
 
         if (document.cookie === '') {
             console.log("Not logged in")
             Login();
+            return
         }
 
         const addFormErr = document.getElementById('addFormErr')
@@ -69,6 +72,12 @@ let AddTask = () => {
 
         addFormErr.innerHTML = `<p style='color:green'>${msg}</p>`;
 
+        AddingTaskForm.reset();
+        
+        setTimeout(() => {
+            // showLogin()
+            addFormErr.innerHTML = ``;
+        }, 1000);
         // console.log(title, description , deadlineDate, deadlineTime);
         
         

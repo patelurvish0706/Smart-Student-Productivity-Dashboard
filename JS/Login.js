@@ -12,6 +12,14 @@ class Task {
         this.desc = desc
         this.time = time
         this.date = date
+
+        if(JSON.parse(localStorage.getItem("Users")) == null){
+            localStorage.setItem("Users", "[]")
+        }
+             
+        if(JSON.parse(localStorage.getItem("Tasks")) == null){
+            localStorage.setItem("Tasks", "[]")
+        }
     }
 }
 
@@ -70,6 +78,8 @@ class TaskManager {
         let userId = parseInt(document.cookie.slice(3,))
         console.log(userId);
         
+        console.log(allTaskList[userId]);
+
         allTaskList[userId].push(task)
         
         
@@ -77,7 +87,6 @@ class TaskManager {
         console.log(allTaskList);
         return "Task Added"
         
-
     }
 
     tryLogin(email, pass) {
