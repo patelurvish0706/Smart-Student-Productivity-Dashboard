@@ -94,9 +94,88 @@ let AllTask = () => {
         return
     }
 
-    taskpages.innerHTML = ` <div id="ListingAllTask">
+    let userId = parseInt(document.cookie.slice(3,))
+
+
+let tasks = JSON.parse(localStorage.getItem("Tasks")) || [];
+let userTasks = tasks[userId] || [];
+
+let container = document.getElementById("taskpages");
+
+// sort by date and time (earliest = highest priority)
+userTasks.sort((a,b)=>{
+    let d1 = new Date(a.time + " " + a.date);
+    let d2 = new Date(b.time + " " + b.date);
+    return d1 - d2;
+});
+
+let grouped = {};
+
+userTasks.forEach(t=>{
+    if(!grouped[t.time]){
+        grouped[t.time] = [];
+    }
+    grouped[t.time].push(t);
+});
+let html = `<div id="ListingAllTask">`;
+
+for(let date in grouped){
+
+    html += `
+    <fieldset>
+        <legend>&nbsp;${date}&nbsp;</legend>
+    `;
+
+    grouped[date].forEach(task=>{
+        html += `
+        <form class="theListForm" >
+            <div id="TaskListTiming" >
+                <div id="taskTime">${task.date}</div>
+            </div>
+
+            <div id="theInnerTask">
+                <div id="theInnerTaskInputs" >
+                    <input type="text" id="title" name="title" value="${task.title}" />
+                    
+                    <textarea id="description" name="description" rows="5" >${task.desc}</textarea>
+                    
+                </div>
+                
+                <div id="listedOptBtns" >
+
+                    <button type="button">
+                        <span class="material-icons">edit</span>
+                    </button>
+
+                    <button type="submit">
+                        <span class="material-icons">check</span>
+                    </button>
+
+                    <button type="reset">
+                        <span class="material-icons">delete</span>
+                     </button>
+
+                </div>
+
+            </div>
+        </form>
+        `;
+    });
+
+    html += `</fieldset>`;
+}
+
+html += `</div>`;
+
+container.innerHTML = html;
+
+// }
+    /*
+    taskpages.innerHTML = ` 
+        <div id="ListingAllTask">
                 <fieldset>
                     <legend>&nbsp;04 / 02 / 2026&nbsp;</legend>
+
                     <form style="display: flex;flex-direction: row; width: 80%;">
                         <div id="TaskTiming" style="width: 30%;text-align: center;">
                             <div id="taskTime" style="padding: 8px 10px;">03:55 AM</div>
@@ -105,9 +184,18 @@ let AllTask = () => {
                             <div style="display: flex; width: 100%;">
                                 <input style="width: 70%;margin-bottom: 5px;" type="text" id="title" name="title" placeholder="Complete Whole Project"/>
                                 <div style="display: flex; width: 40%;">
-                                    <button style="margin: 0 0 5px 5px;width: 50%;" type="button" >Edit</button>
-                                    <button style="margin: 0 0 5px 5px;width: 50%;" type="submit" >Completed</button>
-                                    <button style="margin: 0 0 5px 5px;width: 50%;" type="reset" >Remove</button>
+                               
+                                    <button style="margin: 0 0 5px 5px;width: 50%;" type="button" > 
+                                        <span class="material-icons">edit</span>
+                                    </button>
+
+                                    <button style="margin: 0 0 5px 5px;width: 50%;" type="submit" >
+                                        <span class="material-icons">check</span>
+                                    </button>
+
+                                    <button style="margin: 0 0 5px 5px;width: 50%;" type="reset" >
+                                        <span class="material-icons">delete</span>
+                                    </button>
                                 </div>
                             </div>
                             <textarea type="text" id="description" name="description" rows="5" style="resize: vertical;" placeholder="Student Productivity System is pending. also need to add all functionallities in real." ></textarea>
@@ -131,6 +219,7 @@ let AllTask = () => {
                         </div>
                     </form>
                 </fieldset>
+
                 <fieldset>
                     <legend>&nbsp;05 / 02 / 2026&nbsp;</legend>
                 
@@ -139,7 +228,7 @@ let AllTask = () => {
                     <legend>&nbsp;06 / 02 / 2026&nbsp;</legend>
                 
                 </fieldset>
-            </div>`
+            </div>` */
 }
 
 let PendingTask = () => {

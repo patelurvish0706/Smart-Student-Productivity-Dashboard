@@ -111,7 +111,7 @@ body {
 
 #mainOpts {
     position: relative;
-    display: flex;
+    /* display: flex; */
     display: none;
     flex-direction: column;
     align-items: start;
@@ -443,6 +443,71 @@ hr {
     display: none;
 }
 
+
+/* Listing Tasks  */
+.material-icons {
+        font-size: 20px;
+    }
+
+.theListForm{
+    display:flex;
+    flex-direction:row;
+    width:90%;
+}
+
+#TaskListTiming{
+    width:15%;
+    text-align:center;
+}
+
+#taskTime{
+    padding:8px 10px;
+}
+
+#theInnerTask{
+    display:flex;
+    /* flex-direction:column; */
+    width:100%;
+}
+
+#theInnerTaskInputs{
+    display:flex;
+    flex-direction: column;
+    width:100%;
+}
+
+#theInnerTaskInputs input{
+    /* width:70%; */
+    margin-bottom:5px;
+}
+
+#listedOptBtns{
+    display:flex;
+    flex-direction: column;
+    /* width:40%; */
+}
+
+#listedOptBtns button{
+    margin:0 0 5px 5px;
+    padding: 8px 8px 5px 8px;
+    /* width:40%; */
+}
+
+#theInnerTask textarea{
+    resize:vertical;
+}
+
+#theHr{
+    width: 100%;
+    height: 1px;
+    display: block;
+    margin: 10px 0 10px;
+    background-color: #b5bfc6;
+    border: none;
+}
+
+/* All Css for Mobile Dev  */
+
 @media(max-width: 720px) {
     .IntroContainer {
         flex-direction: column-reverse;
@@ -512,6 +577,10 @@ hr {
         padding: 10px;
     }
 
+    fieldset legend {
+        font-size: 0.9rem;
+    }
+
     form input[type="text"],
     form input[type="email"],
     form input[type="password"],
@@ -523,13 +592,13 @@ hr {
         box-shadow: 0px 0px 5px #dedede;
     }
     
-.formContainer {
-    min-width: 340px;
-}
+    .formContainer {
+        min-width: 340px;
+    }
 
-.formContainer form {
-    width: 85%;
-}
+    .formContainer form {
+        width: 85%;
+    }
 
     .footer p {
         font-size: 0.9rem;
@@ -537,5 +606,39 @@ hr {
         border: none;
         background-color: transparent;
     }
+
+    /* listing Tasks */
+
+    .theListForm{
+        display:flex;
+        flex-direction:column;
+    }
+
+    #taskTime{
+        position: absolute;
+        padding:8px 0 10px 0;
+        width: 0;
+    }
+
+    #theInnerTask{
+        flex-direction: column-reverse;
+    }
+
+    #listedOptBtns{
+        flex-direction: row;
+        justify-content: end;
+    }
+
+    #listedOptBtns button{
+        margin:0 0 5px 5px;
+        padding: 8px 8px 5px 8px;
+        /* width:40%; */
+    }
+
+    #listedOptBtns button span{
+        font-size: 15px;
+    }
+
+
 
 }

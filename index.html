@@ -6,6 +6,9 @@
     <title>Doit Now - Student Productivity Dashboard</title>
     <link rel="shortcut icon" href="https://cdn.iconscout.com/icon/premium/png-256-thumb/todo-icon-svg-download-png-2411523.png" type="image/x-icon">
     <link rel="stylesheet" href="CSS/index.css">
+
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
@@ -22,6 +25,7 @@
                         <label id="nightmode" class="option" name="nightmodeCheck">Night Mode<input for="nightmodeCheck"
                                 type="checkbox" /></label>
                         <div id="addUser" onclick="Login()" class="option">Switch Account</div>
+                        <div id="addUser" onclick="AllUsersListing()" class="option">Users & Data</div>
                         <div id="logout" class="option" onclick="logoutId()">Logout</div>
                     </div>
                 </div>
@@ -359,6 +363,8 @@
                     });
                 </script>
             </div>
+
+            <div class="formContainer" id="usersData"></div>
         </div>
     </div>
 </body>
