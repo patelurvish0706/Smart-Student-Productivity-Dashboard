@@ -1,0 +1,541 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Sora:wght@100..800&display=swap');
+/* font-family: "Sora", sans-serif; */
+/* font-family: "Montserrat", sans-serif; */
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+::selection {
+    color: white;
+    background: #8f9aa2;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f8f8f8;
+
+}
+
+/* ---- Basic ---- */
+.hidden {
+    display: none;
+}
+
+/* ---- Top Navbar ---- */
+
+.navbar {
+    width: 100dvw;
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+}
+
+.navbar .navs {
+    padding: 10px 30px;
+    background-color: #eff2f9;
+    /* background-color: #fafafa; */
+    background-color: #fff;
+
+    width: 90%;
+    height: 30px;
+    margin: auto;
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0px 0px 5px 2px #0001;
+}
+
+#DoitTitle {
+    color: #6C7F8E;
+    font-size: 1.5rem;
+    font-family: "Sora", sans-serif;
+    /* font-family: "Montserrat", sans-serif; */
+    text-shadow: 0px 0px 5px #0001;
+}
+
+#DoitTitle #it {
+    color: #b5bfc6;
+    font-weight: 400;
+}
+
+#DoitTitle #now {
+    color: #6C7F8E;
+}
+
+#userOptions {
+    position: relative;
+    top: 78px;
+    font-family: "Montserrat", sans-serif;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: flex-start;
+    align-items: flex-end;
+    height: 210px;
+    width: 280px;
+}
+
+#userOptions #TimeContainer {
+    margin: 10px;
+    border: 1px solid #0001;
+}
+
+#userOptions .option {
+    padding: 10px 0;
+}
+
+#visibleOpt button {
+    color: #6C7F8E;
+    font-size: 1.4rem;
+    outline: none;
+    border: none;
+    padding: 4px 10px;
+    background-color: #f2f2f2;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#visibleOpt button:hover {
+    color: #f2f2f2;
+    /* background-color: #6C7F8E; */
+    background-color: #6c7f8ed0;
+}
+
+#mainOpts {
+    position: relative;
+    display: flex;
+    display: none;
+    flex-direction: column;
+    align-items: start;
+    background-color: #fff;
+    justify-content: flex-end;
+    box-shadow: 0px 0px 3px #0003;
+    /* background-color: #eff2f9; */
+    background-color: #fafafa;
+    border-radius: 5px;
+    margin-top: 10px;
+
+    z-index: 1;
+}
+
+#mainOpts .option {
+    color: #6C7F8E;
+    /* width: 150px; */
+    text-align: end;
+    padding: 10px 20px;
+    width: 130px;
+    cursor: pointer;
+    margin-bottom: 0;
+}
+
+#mainOpts .option input {
+    position: relative;
+    top: 2px;
+    left: 4px;
+}
+
+
+#mainOpts .option:hover {
+    color: #fff;
+    background-color: #6C7F8E;
+    /* color: red; */
+    text-decoration: 1px underline;
+}
+
+/* ----- IntroContainer ----- */
+
+.IntroContainer {
+    /* height: 90px; */
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    margin: 40px auto;
+}
+
+#QuoteContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+    width: 70%;
+    padding-left: 20px;
+    border-left: 3px solid #6C7F8E;
+
+}
+
+#quotes {
+    text-align: start;
+    color: #dedede;
+    color: #eff2f9;
+    color: #6C7F8E;
+    font-size: 1.3rem;
+    font-weight: 600;
+    padding: 0;
+}
+
+#quotes p{
+    margin-top:10px;
+    font-size:1rem;
+    font-weight:400;
+}
+
+#QuoteContainer p {
+    padding: 0;
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+#DateWeather {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: end;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+    width: 30%;
+}
+
+#theTime,
+#theWeather {
+    text-align: end;
+    color: #6C7F8E;
+    font-family: "Sora", sans-serif;
+    font-weight: 300;
+}
+
+#theTime p {
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+#theWeather {
+    font-size: 1.4rem;
+}
+
+#greetUser {
+    color: #657886;
+    font-weight: 600;
+    font-style: italic;
+    text-align: end;
+}
+
+#usersName {
+    font-weight: 800;
+}
+
+/* ----- TaskManagement ----- */
+
+.taskManagement {
+    width: 90%;
+    /* background-color: #0001; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+}
+
+#taskOpsBtns {
+    /* font-family: "Montserrat", sans-serif; */
+    font-family: "Sora", sans-serif;
+    display: flex;
+    margin: 10px 0;
+    overflow-x: scroll;
+}
+
+.taskCtgrsbtn {
+    padding: 10px 15px;
+    color: #6C7F8E;
+    /* background-color: #b5bfc6; */
+    background-color: #fff;
+    margin: 0 10px 0 0;
+    border: 1px solid #6C7F8E;
+    cursor: pointer;
+    box-shadow: 0px 0px 5px #dedede;
+    border-radius: 5px;
+    white-space: nowrap;
+}
+
+.taskCtgrsbtn:hover {
+    color: #fff;
+    background-color: #6C7F8E;
+}
+
+#taskpages {
+    margin: 10px 0 0 0;
+    font-family: "Montserrat", sans-serif;
+}
+
+fieldset {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    justify-content: center;
+    align-items: center;
+
+    color: #6C7F8E;
+    border-color: 1px solid #6C7F8E;
+    border-radius: 5px;
+    background-color: #fff;
+    width: 100%;
+    min-width: 300px;
+    margin-bottom: 10px;
+}
+
+fieldset form {
+    width: 80%;
+
+}
+
+form {
+    padding: 20px 0 30px 0;
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    min-width: 200px;
+    justify-self: center;
+}
+
+form .errPlace {
+    color: red;
+    margin-bottom: 10px;
+}
+
+form label {
+    margin: 5px 0;
+}
+
+form p {
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="time"],
+form input[type="date"],
+form textarea {
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    border-radius: 5px;
+    outline: none;
+    /* border: none; */
+    border: 1px solid #6C7F8E;
+
+    font-family: "Sora", sans-serif;
+    color: #6C7F8E;
+    box-shadow: 0px 0px 5px #dedede;
+}
+
+form input[type="time"]:focus,
+form input[type="date"]:focus {
+    background-color: #f2f2f2;
+}
+
+form button {
+    display: inline;
+    color: #6C7F8E;
+    background-color: #fff;
+
+    padding: 10px 15px;
+    width: max-content;
+    font-size: 1rem;
+    margin: 10px 10px 20px 0;
+
+    border: 1px solid #6C7F8E;
+    cursor: pointer;
+    box-shadow: 0px 0px 5px #dedede;
+    border-radius: 5px;
+}
+
+form button:hover {
+    color: #fff;
+    background-color: #6C7F8E;
+}
+
+/* ----- Footer ----- */
+
+.footer {
+    width: 90%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-self: center;
+    margin-bottom: 20px;
+    font-family: "Sora", sans-serif;
+}
+
+.footer p {
+    color: #6C7F8E;
+    margin: 0;
+    padding: 8px 15px;
+    /* background-color: #b5bfc6;
+    background-color: #fff;
+    border: 1px solid #6C7F8E; */
+    /* border-radius: 5px; */
+    text-align: center;
+}
+
+.footer p a {
+    color: #657886;
+    text-decoration: 1px solid underline;
+    font-weight: 400;
+    font-style: italic;
+}
+
+/* LoginRegisterManagement */
+
+.LoginRegisterContainer {
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0001;
+}
+
+#page {
+    /* filter: blur(4px); */
+    filter: blur(0px);
+    overflow-x: hidden;
+    height: 100vh;
+}
+
+#blurlayer {
+    width: 100dvw;
+    height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.formContainer {
+    width: 30%;
+    min-width: 400px;
+    box-shadow: 0px 0px 10px #b5bfc6;
+    border-radius: 10px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+}
+
+.formContainer form {
+    color: #657886;
+    /* font-family: "Sora", sans-serif; */
+    font-family: "Montserrat", sans-serif;
+    width: 80%;
+}
+
+hr {
+    display: none;
+}
+
+@media(max-width: 720px) {
+    .IntroContainer {
+        flex-direction: column-reverse;
+        /* flex-direction: column; */
+        margin: 10px auto 0;
+    }
+
+    #QuoteContainer {
+        width: 92%;
+        margin: 10px auto;
+    }
+
+    #quotes {
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 0;
+    }
+
+    #quotes p{
+        font-size: 0.85rem;
+        margin-top:10px;
+        font-weight:400;
+    }
+
+    hr {
+        display: block;
+    }
+
+    #DateWeather {
+        margin: 10px auto;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+    }
+
+    #theWeather {
+        text-align: start;
+        /* width: 30%; */
+    }
+
+    #theTime {
+        font-size: 0.9rem;
+        width: 100%;
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    #greetUser {
+        width: 100%;
+        grid-column: 1 / 3;
+        /* margin-bottom: 5px; */
+    }
+
+    .taskCtgrsbtn {
+        padding: 8px 10px;
+        font-size: 0.9rem;
+    }
+
+    fieldset {
+        width: 90%;
+        min-width: 150px;
+        margin-bottom: 5px;
+    }
+
+    fieldset form {
+        width: 90%;
+        padding: 10px;
+    }
+
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="password"],
+    form input[type="time"],
+    form input[type="date"],
+    form textarea {
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+        box-shadow: 0px 0px 5px #dedede;
+    }
+    
+.formContainer {
+    min-width: 340px;
+}
+
+.formContainer form {
+    width: 85%;
+}
+
+    .footer p {
+        font-size: 0.9rem;
+        padding: 0;
+        border: none;
+        background-color: transparent;
+    }
+
+}

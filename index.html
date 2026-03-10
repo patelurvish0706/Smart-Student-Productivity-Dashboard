@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doit Now - Student Productivity Dashboard</title>
+    <link rel="shortcut icon" href="https://cdn.iconscout.com/icon/premium/png-256-thumb/todo-icon-svg-download-png-2411523.png" type="image/x-icon">
+    <link rel="stylesheet" href="CSS/index.css">
+</head>
+
+<body>
+    <div id="page">
+        <div class="navbar">
+            <div class="navs">
+                <div id="DoitTitle">Do<span id="it">it</span> <span id="now">Now!</span></div>
+
+                <div id="userOptions">
+                    <div id="visibleOpt" class="option"><button onclick="menubar()">≡</button> </div>
+                    <div id="mainOpts">
+                        <div id="login" class="option" onclick="Login()">Login</div>
+                        <label id="nightmode" class="option" name="nightmodeCheck">Night Mode<input for="nightmodeCheck"
+                                type="checkbox" /></label>
+                        <div id="addUser" onclick="Login()" class="option">Switch Account</div>
+                        <div id="logout" class="option" onclick="logoutId()">Logout</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="IntroContainer">
+
+            <hr width="100%" style="margin: 10px auto ;background-color: #b5bfc6;border: none;height: 1px;">
+
+
+            <div id="QuoteContainer">
+                <p id="quotes"></p>
+            </div>
+
+            <hr width="100%" style="margin: 10px auto ;background-color: #b5bfc6;border: none;height: 1px;">
+
+            <div id="DateWeather">
+                
+                <span id="greetUser">Hello <span id="usersName"><script>
+                        if(document.cookie == ''){
+                            document.write('Student')
+                        }else{
+                            document.write(JSON.parse(localStorage.getItem("Users"))[parseInt(document.cookie.slice(3,))].uname)
+                        }
+                    </script></span>
+                    
+                </span>
+                <span id="theWeather"></span>
+                <span id="theTime"></span>
+            </div>
+            
+        </div>
+
+        <div class="taskManagement">
+            <!-- Btns to add & view -->
+            <div id="taskOpsBtns">
+                <div id="AddTask" class="taskCtgrsbtn">Add Task</div>
+                <div id="AllTask" class="taskCtgrsbtn">All Tasks</div>
+                <div id="PendingTask" class="taskCtgrsbtn">Pending</div>
+                <div id="CompletedTask" class="taskCtgrsbtn">Completed</div>
+                <div id="RemovedTask" class="taskCtgrsbtn">Removed</div>
+            </div>
+
+            <!-- Contain diff Pages about Operations -->
+            <div id="taskpages">
+                <!-- AddTask -> Adding task -->
+                <!-- <div id="addingTask">
+                <fieldset>
+                    <legend>&nbsp;Add Details About Task&nbsp;</legend>
+                    <form>
+                        <label for="title">Title</label>
+                        <input type="text" id="title" name="title" placeholder="Write subject Title here."/>
+                        <label for="description">Description</label>
+                        <textarea type="text" id="description" name="description" rows="5" style="resize: vertical;" placeholder="Write Description about Task here." ></textarea>
+                        <label for="deadlineTime">Completion Time</label>
+                        <input type="time" id="deadlineTime" name="deadlineTime"/>
+                        <label for="deadlineDate">Deadline Date</label>
+                        <input type="date" id="deadlineDate" name="deadlineDate" />
+                        <div>
+                            <button type="submit" >Add Task</button>
+                            <button type="reset" >Cancel</button>
+                        </div>
+                    </form>
+                </fieldset>
+            </div> -->
+
+                <!-- AllTask -> ListAll -->
+                <!-- <div id="ListingAllTask">
+                <fieldset>
+                    <legend>&nbsp;04/02/2026&nbsp;</legend>
+                    <form style="display: flex;flex-direction: row; width: 80%;">
+                        <div id="TaskTiming" style="width: 30%;text-align: center;">
+                            <div id="taskTime" style="padding: 8px 10px;">03:55 AM</div>
+                        </div>
+                        <div id="theTask" style="display:flex;flex-direction: column;width: 100%;">
+                            <div style="display: flex; width: 100%;">
+                                <input style="width: 70%;margin-bottom: 5px;" type="text" id="title" name="title" placeholder="Complete Whole Project"/>
+                                <div style="display: flex; width: 40%;">
+                                    <button style="margin: 0 0 5px 5px;width: 50%;" type="button" >Edit</button>
+                                    <button style="margin: 0 0 5px 5px;width: 50%;" type="submit" >Completed</button>
+                                    <button style="margin: 0 0 5px 5px;width: 50%;" type="reset" >Remove</button>
+                                </div>
+                            </div>
+                            <textarea type="text" id="description" name="description" rows="5" style="resize: vertical;" placeholder="Student Productivity System is pending. also need to add all functionallities in real." ></textarea>
+                        </div>
+                    </form>
+
+                    <form style="display: flex;flex-direction: row; width: 80%;">
+                        <div id="TaskTiming" style="width: 30%;text-align: center;">
+                            <div id="taskTime" style="padding: 8px 10px;">04:20 AM</div>
+                        </div>
+                        <div id="theTask" style="display:flex;flex-direction: column;width: 100%;">
+                            <div style="display: flex; width: 100%;">
+                                <input style="width: 70%;margin-bottom: 5px;" type="text" id="title" name="title" value="Write subject Title here." disabled/>
+                                <div style="display: flex; width: 40%;">
+                                    <button style="margin: 0 0 5px 5px;width: 50%;" type="button" >Edit</button>
+                                    <button style="margin: 0 0 5px 5px;width: 50%;" type="submit" >Completed</button>
+                                    <button style="margin: 0 0 5px 5px;width: 50%;" type="reset" >Remove</button>
+                                </div>
+                            </div>
+                            <textarea type="text" id="description" name="description" rows="5" style="resize: vertical;" placeholder="Write Description about Task here." ></textarea>
+                        </div>
+                    </form>
+                </fieldset>
+                <fieldset>
+                    <legend>&nbsp;05/02/2026&nbsp;</legend>
+                
+                </fieldset>
+                <fieldset>
+                    <legend>&nbsp;06/02/2026&nbsp;</legend>
+                
+                </fieldset>
+            </div> -->
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Made with 🩶 by <a href="https://github.com/patelurvish0706" target="_blank">Urvish Patel</a> -
+                <script>document.write(new Date().getFullYear())</script> &copy;
+            </p>
+        </div>
+    </div>
+    
+    <!-- lOGIN REGISTER Popup -->
+    <div class="LoginRegisterContainer">
+        <div id="blurlayer">
+            <div class="formContainer" id="registerForm" style="display: none;">
+                <form id="theRegForm">
+                    <p></p>
+                    <div style="height:50px; display: flex;justify-content: space-between;align-items: center;">
+                        <h2>Register</h2>
+                        <h2 id="close"
+                            style="font-weight: 500; border-radius: 5px; cursor: pointer; padding:0 8px 3px 8px; background-color: #0001;"
+                            onclick="closeTab()">
+                            x</h2>
+                    </div>
+
+                    <p style="color: red;" class="errPlace" id="ErrRegister"></p>
+
+                    <label for="uname">*Name</label>
+                    <input type="text" id="uname" name="uname" placeholder="Alison Burgers" />
+                    <label for="email">*Email</label>
+                    <input type="email" id="email" name="email" placeholder="alison@gmail.com" />
+
+                    <label for="pass">*Password</label>
+                    <input type="password" id="pass" name="pass" placeholder="Burgers@50" />
+
+                    <label for="repass">*Re-Enter Password</label>
+                    <input type="password" id="repass" name="repass" placeholder="Burgers@50" />
+
+                    <div>
+                        <button type="submit">Register</button>
+                        <button type="reset">Cancel</button>
+                    </div>
+                    <label for="pass" onclick="showLogin()"
+                        style="text-decoration: 1px solid underline;cursor: pointer;">Login Here</label>
+                    <p></p>
+                </form>
+                <script>
+                    const theRegForm = document.querySelector("#theRegForm");
+                    const ErrRegister = document.getElementById('ErrRegister')
+
+                    theRegForm.addEventListener("submit", function (e) {
+                        e.preventDefault();
+
+                        const name = document.getElementById("uname").value.trim();
+                        const email = document.getElementById("email").value.trim();
+                        const pass = document.getElementById("pass").value;
+                        const repass = document.getElementById("repass").value;
+
+
+                        if (!name || !email || !pass || !repass) {
+                            // alert("All fields are required");
+                            ErrRegister.innerText = "All * fields are required";
+                            return;
+                        }
+
+                        // Name validation
+                        if (name.length < 3) {
+                            // alert("Name must be at least 3 characters");
+                            ErrRegister.innerText = "Name must be at least 3 characters";
+
+                            return;
+                        }
+
+                        // Email validation
+                        const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+                        if (!email.match(emailPattern)) {
+                            // alert("Enter valid email");
+                            ErrRegister.innerText = "Enter valid email";
+                            return;
+                        }
+
+                        // Password validation
+                        if (pass.length < 6) {
+                            // alert("Password must be at least 6 characters");
+                            ErrRegister.innerText = "Password must be at least 6 characters";
+                            return;
+                        }
+
+                        // Confirm password
+                        if (pass !== repass) {
+                            // alert("Passwords do not match");
+                            ErrRegister.innerText = "Passwords do not match";
+
+                            return;
+                        }
+
+                        
+                        let msg = DOit.addUser(new User(name, email, pass))
+
+                        // alert(msg);
+
+                        if(msg){
+                            ErrRegister.innerHTML = `<p style="color:green;">Register Succesfull</p>`;
+                            theRegForm.reset();
+                            
+                            setTimeout(() => {
+                                showLogin()
+                                ErrRegister.innerHTML = ``;
+                            }, 1000);
+                        }else{
+                            ErrRegister.innerHTML = `<p style="color:orange;">Email already Exist</p>`;
+                            return
+                        }
+
+                        
+                        // let allUsers = DOit.allUsers()
+                        // console.log(allUsers);
+
+                        
+                        // console.log(JSON.parse(localStorage.getItem("Users"))); // Output: JohnDoe// Retrieve an item
+                        // localStorage.removeItem("Users");
+                        // localStorage.clear();
+
+                        // theRegForm.reset();
+
+                        // setTimeout(() => {
+                        //     showLogin()
+                        // }, 1000);
+                    });
+                </script>
+            </div>
+
+            <div class="formContainer" id="loginForm">
+                <form id="theloginForm">
+                    <p></p>
+                    <div style="height:50px; display: flex;justify-content: space-between;align-items: center;">
+                        <h2>Login</h2>
+                        <h2 id="close"
+                            style="font-weight: 500; border-radius: 5px; cursor: pointer; padding:0 8px 3px 8px; background-color: #0001;"
+                            onclick="closeTab()">
+                            x</h2>
+                    </div>
+                    
+                    <p style="color: red;" class="errPlace" id="Errlogin"></p>
+
+                    <label for="logEmail">*Email</label>
+                    <input type="email" id="logEmail" name="logEmail" placeholder="alison@gmail.com" />
+
+                    <label for="logPass">*Password</label>
+                    <input type="password" id="logPass" name="logPass" placeholder="Burgers@50" />
+
+                    <div>
+                        <button type="submit">Login</button>
+                        <button type="reset">Cancel</button>
+                    </div>
+                    <label for="pass" onclick="showReg()"
+                        style="text-decoration: 1px solid underline;cursor: pointer;">Register Here</label>
+                    <p></p>
+                </form>
+                <script>
+                    const loginForm = document.querySelector("#theloginForm");
+                    const Errlogin = document.getElementById('Errlogin') 
+
+                    loginForm.addEventListener("submit", function (e) {
+                        e.preventDefault();
+
+                        const email = document.getElementById("logEmail").value.trim();
+                        const pass = document.getElementById("logPass").value;
+
+                        if (!email || !pass ) {
+                            // alert("All fields are required");
+                            Errlogin.innerText = "All * fields are required";
+                            return;
+                        }
+
+
+                        // Email validation
+                        const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+                        if (!email.match(emailPattern)) {
+                            // alert("Invalid email");
+                            Errlogin.innerText = "Invalid email";
+                            return;
+                        }
+
+                       
+                        let msg = DOit.tryLogin(email, pass)
+
+                        if(msg == -1 || msg == undefined){
+                            // alert("Invalid Email or Password!")
+                            Errlogin.innerHTML = `<p style="color:orange;">Invalid Email or Password!</p>`;
+                            return
+                        }else if(msg == -2){
+                            Errlogin.innerText = "Users not Registered";
+                        }
+                        else{
+                            loginForm.reset();
+                            let id = msg;
+
+                            // set coockie
+                            document.cookie = `id=${id}; path=/; max-age=7200`; // Expires in 2 hour
+                            console.log(document.cookie); // Output: username=JohnDoe
+                            // document.cookie = "username=; path=/; max-age=0";
+
+                            // alert('Logged iN')
+                            Errlogin.innerHTML = `<p style="color:green;">Login Success</p>`;
+
+                            // greetUser
+                            // document.getElementById('greetUser').innerText = `Welcome ${JSON.parse(localStorage.getItem("Users"))[id].uname}`;
+
+                            setTimeout(() => {
+                                closeTab()
+                                Errlogin.innerHTML = ``;
+                                window.location.reload();
+                            }, 800);
+                        }
+                        
+                        // localStorage.setItem("Users", JSON.stringify(allUsers) );
+                        // console.log(JSON.parse(localStorage.getItem("Users"))); // Output: JohnDoe// Retrieve an item
+                        // localStorage.removeItem("Users");
+                        // localStorage.clear();
+                        
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    let mainOpts = document.getElementById('mainOpts')
+    let theTime = document.getElementById("theTime")
+    let quotes = document.getElementById("quotes")
+    let theWeather = document.getElementById("theWeather")
+
+    let quotesFetching = async () => {
+        let response = await fetch('http://api.quotable.io/random').then(async (data) => await data.json()).then((data) => quotes.innerHTML = `" ` + data.content + ` "<p>&nbsp;&nbsp;&nbsp;- ` + data.author + `<p/>`)
+    }
+    quotesFetching()
+
+    let weatherFetching = async () => {
+        let response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=23.022&longitude=72.57&current=temperature_2m').then(async (data) => await data.json()).then((data) => theWeather.innerHTML = `${data.current.temperature_2m} °c`)
+    }
+    weatherFetching()
+
+    let menubar = () => {
+        if (mainOpts.style.display === "flex") {
+            mainOpts.style.display = "none"
+            mainOpts.classList = "hidden"
+        } else {
+            mainOpts.style.display = "flex"
+            mainOpts.classList = ""
+        }
+    }
+
+    setInterval(() => {
+        let date = new Date()
+
+        let time = date.toLocaleString('en-US', {
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+            hour12: true
+        });
+
+        let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        let dayName = days[date.getDay()];
+
+        let todaysdate = date.getDate().toString().padStart(2, "0") + " / " + (date.getMonth() + 1).toString().padStart(2, "0") + " / " + date.getFullYear();
+
+        theTime.innerHTML = `<p>${dayName} - ${todaysdate}</p><p>${time}</p>`;
+
+    }, 1000);
+
+
+</script>
+<script src="./JS/taskOps.js"></script>
+<script src="./JS/Login.js"></script>
+<script src="./JS/script.js"></script>
+
+</html>
