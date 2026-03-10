@@ -368,7 +368,7 @@
     let theWeather = document.getElementById("theWeather")
 
     let quotesFetching = async () => {
-        let response = await fetch('api.quotable.io/random').then(async (data) => await data.json()).then((data) => quotes.innerHTML = `" ` + data.content + ` "<p>&nbsp;&nbsp;&nbsp;- ` + data.author + `<p/>`)
+        let response = await fetch('https://zenquotes.io/api/random').then(async (data) => await data.json()).then((data) => quotes.innerHTML = `" ` + data.q + ` "<p>&nbsp;&nbsp;&nbsp;- ` + data.a + `<p/>`)
     }
     quotesFetching()
 
