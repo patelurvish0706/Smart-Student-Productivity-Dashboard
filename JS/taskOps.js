@@ -9,7 +9,7 @@ let AddTask = () => {
                     <legend>&nbsp;Add Details About Task&nbsp;</legend>
                     <form id="AddingTaskForm">
 
-                        <p id="addFormErr" style="color:red;margin-bottom:10px;">This is err here</p>
+                        <p id="addFormErr" style="color:red;margin-bottom:10px;"></p>
 
                         <label for="title">Title</label>
                         <input type="text" id="title" name="title" placeholder="Write subject Title here."/>

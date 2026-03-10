@@ -12,6 +12,12 @@ let taskpages = document.getElementById('taskpages')
 let Login = () => {
     page.style.filter = ' blur(4px)'
     LoginRegisterContainer.style.display = "flex"
+    showLogin()
+}
+
+let Register = () => {
+    Login()
+    showReg()
 }
 
 page.style.filter = ' blur(0px)'
