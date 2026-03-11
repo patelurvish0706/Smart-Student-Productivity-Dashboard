@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doit Now - Student Productivity Dashboard</title>
-    <link rel="shortcut icon" href="https://cdn.iconscout.com/icon/premium/png-256-thumb/todo-icon-svg-download-png-2411523.png" type="image/x-icon">
+    <link rel="shortcut icon"
+        href="https://cdn.iconscout.com/icon/premium/png-256-thumb/todo-icon-svg-download-png-2411523.png"
+        type="image/x-icon">
     <link rel="stylesheet" href="CSS/index.css">
 
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
-<body>
+<body class="dark">
     <div id="page">
         <div class="navbar">
             <div class="navs">
@@ -22,8 +25,7 @@
                     <div id="mainOpts">
                         <div id="login" class="option" onclick="Login()">Login</div>
                         <div id="login" class="option" onclick="Register()">Register</div>
-                        <label id="nightmode" class="option" name="nightmodeCheck">Night Mode<input for="nightmodeCheck"
-                                type="checkbox" /></label>
+                        <label id="nightmode" class="option" name="nightmodeCheck">Night Mode: Off</label>
                         <div id="addUser" onclick="Login()" class="option">Switch Account</div>
                         <div id="addUser" onclick="AllUsersListing()" class="option">Users & Data</div>
                         <div id="logout" class="option" onclick="logoutId()">Logout</div>
@@ -44,20 +46,22 @@
             <hr width="100%" style="margin: 10px auto ;background-color: #b5bfc6;border: none;height: 1px;">
 
             <div id="DateWeather">
-                
-                <span id="greetUser">Hello <span id="usersName"><script>
-                        if(document.cookie == ''){
-                            document.write('Student')
-                        }else{
-                            document.write(JSON.parse(localStorage.getItem("Users"))[parseInt(document.cookie.slice(3,))].uname)
-                        }
-                    </script></span>
-                    
+
+                <span id="greetUser">Hello <span id="usersName">
+                        <script>
+                            if (document.cookie == '') {
+                                document.write('Student')
+                            } else {
+                                document.write(JSON.parse(localStorage.getItem("Users"))[parseInt(document.cookie.slice(3,))].uname)
+                            }
+                        </script>
+                    </span>
+
                 </span>
                 <span id="theWeather"></span>
                 <span id="theTime"></span>
             </div>
-            
+
         </div>
 
         <div class="taskManagement">
@@ -149,7 +153,7 @@
             </p>
         </div>
     </div>
-    
+
     <!-- lOGIN REGISTER Popup -->
     <div class="LoginRegisterContainer">
         <div id="blurlayer">
@@ -235,29 +239,29 @@
                             return;
                         }
 
-                        
+
                         let msg = DOit.addUser(new User(name, email, pass))
 
                         // alert(msg);
 
-                        if(msg){
+                        if (msg) {
                             ErrRegister.innerHTML = `<p style="color:green;">Register Succesfull</p>`;
                             theRegForm.reset();
-                            
+
                             setTimeout(() => {
                                 showLogin()
                                 ErrRegister.innerHTML = ``;
                             }, 1000);
-                        }else{
+                        } else {
                             ErrRegister.innerHTML = `<p style="color:orange;">Email already Exist</p>`;
                             return
                         }
 
-                        
+
                         // let allUsers = DOit.allUsers()
                         // console.log(allUsers);
 
-                        
+
                         // console.log(JSON.parse(localStorage.getItem("Users"))); // Output: JohnDoe// Retrieve an item
                         // localStorage.removeItem("Users");
                         // localStorage.clear();
@@ -281,7 +285,7 @@
                             onclick="closeTab()">
                             x</h2>
                     </div>
-                    
+
                     <p style="color: red;" class="errPlace" id="Errlogin"></p>
 
                     <label for="logEmail">*Email</label>
@@ -300,7 +304,7 @@
                 </form>
                 <script>
                     const loginForm = document.querySelector("#theloginForm");
-                    const Errlogin = document.getElementById('Errlogin') 
+                    const Errlogin = document.getElementById('Errlogin')
 
                     loginForm.addEventListener("submit", function (e) {
                         e.preventDefault();
@@ -308,7 +312,7 @@
                         const email = document.getElementById("logEmail").value.trim();
                         const pass = document.getElementById("logPass").value;
 
-                        if (!email || !pass ) {
+                        if (!email || !pass) {
                             // alert("All fields are required");
                             Errlogin.innerText = "All * fields are required";
                             return;
@@ -323,17 +327,17 @@
                             return;
                         }
 
-                       
+
                         let msg = DOit.tryLogin(email, pass)
 
-                        if(msg == -1 || msg == undefined){
+                        if (msg == -1 || msg == undefined) {
                             // alert("Invalid Email or Password!")
                             Errlogin.innerHTML = `<p style="color:orange;">Invalid Email or Password!</p>`;
                             return
-                        }else if(msg == -2){
+                        } else if (msg == -2) {
                             Errlogin.innerText = "Users not Registered";
                         }
-                        else{
+                        else {
                             loginForm.reset();
                             let id = msg;
 
@@ -354,12 +358,12 @@
                                 window.location.reload();
                             }, 800);
                         }
-                        
+
                         // localStorage.setItem("Users", JSON.stringify(allUsers) );
                         // console.log(JSON.parse(localStorage.getItem("Users"))); // Output: JohnDoe// Retrieve an item
                         // localStorage.removeItem("Users");
                         // localStorage.clear();
-                        
+
                     });
                 </script>
             </div>
@@ -413,10 +417,27 @@
 
     }, 1000);
 
+    let nightmode = document.getElementById('nightmode')
+    document.querySelector('html').style.filter = 'invert(0)'
+    document.getElementById('nightmode').addEventListener('click', () => {
+
+        // console.log(document.querySelector('html').style.filter);
+
+        if (document.querySelector('html').style.filter == "invert(0)") {
+            document.querySelector('html').style.filter = 'invert(100%)'
+            nightmode.innerText = 'Dark Mode : On'
+        } else {
+            document.querySelector('html').style.filter = 'invert(0)'
+            nightmode.innerText = 'Dark Mode : Off'
+        }
+
+    })
+
 
 </script>
 <script src="./JS/taskOps.js"></script>
 <script src="./JS/Login.js"></script>
 <script src="./JS/script.js"></script>
+<!-- <script src="./JS/test.js"></script> -->
 
 </html>

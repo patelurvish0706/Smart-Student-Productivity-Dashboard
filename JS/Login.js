@@ -7,11 +7,12 @@ class User {
 }
 
 class Task {
-    constructor(title, desc, time, date) {
+    constructor(title, desc, time, date ,status) {
         this.title = title
         this.desc = desc
         this.time = time
         this.date = date
+        this.status = status
 
         if(JSON.parse(localStorage.getItem("Users")) == null){
             localStorage.setItem("Users", "[]")

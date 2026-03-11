@@ -1,4 +1,26 @@
+function clearActive(){
+    document.getElementById("AddTask").style.color = "#6c7f8e"
+    document.getElementById("AddTask").style.backgroundColor = "#fff"
+
+    document.getElementById("AllTask").style.color = "#6c7f8e"
+    document.getElementById("AllTask").style.backgroundColor = "#fff"
+
+    document.getElementById("PendingTask").style.color = "#6c7f8e"
+    document.getElementById("PendingTask").style.backgroundColor = "#fff"
+
+    document.getElementById("CompletedTask").style.color = "#6c7f8e"
+    document.getElementById("CompletedTask").style.backgroundColor = "#fff"
+
+    document.getElementById("RemovedTask").style.color = "#6c7f8e"
+    document.getElementById("RemovedTask").style.backgroundColor = "#fff"
+
+}
+
 let AddTask = () => {
+    clearActive()
+
+    document.getElementById("AddTask").style.color = "#fff"
+    document.getElementById("AddTask").style.backgroundColor = "#6c7f8e"
 
     const date = new Date();
     let validdate = date.getFullYear() + "-" + (date.getMonth() + 1).toString().padStart(2, "0") + "-" + date.getDate().toString().padStart(2, "0");
@@ -65,7 +87,8 @@ let AddTask = () => {
 
         console.log("submitted");
 
-        let thetask = new Task(title, description, deadlineDate, deadlineTime)
+        let status = "pending"
+        let thetask = new Task(title, description, deadlineDate, deadlineTime, status)
         console.log(thetask);
 
         let msg = DOit.addTask(thetask)
@@ -86,189 +109,168 @@ let AddTask = () => {
 }
 AddTask()
 
-let AllTaskOrignal = () => {
-
-    let id = document.cookie;
-    if (id == '') {
-        Login()
-        return
-    }
-
-    let userId = parseInt(document.cookie.slice(3,))
-
-
-    let tasks = JSON.parse(localStorage.getItem("Tasks")) || [];
-    let userTasks = tasks[userId] || [];
-
-    let container = document.getElementById("taskpages");
-
-    // sort by date and time (earliest = highest priority)
-    userTasks.sort((a, b) => {
-        let d1 = new Date(a.time + " " + a.date);
-        let d2 = new Date(b.time + " " + b.date);
-        return d1 - d2;
-    });
-
-    let grouped = {};
-
-    userTasks.forEach(t => {
-        if (!grouped[t.time]) {
-            grouped[t.time] = [];
-        }
-        grouped[t.time].push(t);
-    });
-    let html = `<div id="ListingAllTask">`;
-
-    if(JSON.parse(localStorage.getItem("Tasks")) == "" || JSON.parse(localStorage.getItem("Tasks")) == null ){
-        html += `<fieldset style="height:400px;justify-content:start;">
-                    <p style="margin:10px 0 30px;">No Tasks are added</p>
-                </fieldset>`;
-    }else{
-
-    for (let date in grouped) {
-
-    html += `<fieldset>
-            <legend>&nbsp;${date}&nbsp;</legend>
-            `;
-
-    grouped[date].forEach(task => {
-        html += `
-        <form class="theListForm" >
-            <div id="TaskListTiming" >
-                <div id="taskTime">${task.date}</div>
-            </div>
-
-            <div id="theInnerTask">
-                <div id="theInnerTaskInputs" >
-                    <input type="text" id="title" name="title" value="${task.title}" readonly/>
-                    
-                    <textarea id="description" name="description" rows="5" readonly >${task.desc}</textarea>
-                    
-                </div>
-                
-                <div id="listedOptBtns" >
-
-                    <button type="button">
-                        <span class="material-icons">edit</span>
-                    </button>
-
-                    <button type="button">
-                        <span class="material-icons">check</span>
-                    </button>
-
-                    <button type="reset">
-                        <span class="material-icons">delete</span>
-                     </button>
-
-                </div>
-
-            </div>
-        </form>
-        `;
-        });
-
-        html += `</fieldset>`;
-    }
-
-    }
-    html += `</div>`;
-
-    container.innerHTML = html;
-
-}
-
-
 let AllTask = () => {
+    clearActive()
+
+    document.getElementById("AllTask").style.color = "#fff"
+    document.getElementById("AllTask").style.backgroundColor = "#6c7f8e"
+
 
     let id = document.cookie;
-    if (id == '') {
-        Login()
-        return
+    if (!id) {
+        Login();
+        return;
     }
 
-    let userId = parseInt(document.cookie.slice(3,))
+    let userId = parseInt(id.slice(3));
     let tasks = JSON.parse(localStorage.getItem("Tasks")) || [];
     let userTasks = tasks[userId] || [];
 
     let container = document.getElementById("taskpages");
 
-    userTasks.sort((a, b) => {
-        let d1 = new Date(a.time + " " + a.date);
-        let d2 = new Date(b.time + " " + b.date);
-        return d1 - d2;
-    });
+    // let validTasks = userTasks.filter(t => t.status !== "delete");
 
+    // if (validTasks.length === 0) {
+    if (userTasks.length === 0) {
+        container.innerHTML = `
+        <fieldset style="display:flex;align-items: center;justify-content: start;height:400px;">
+            <p style="margin:10px 0 30px;">No Tasks are added</p>
+        </fieldset>`;
+        return;
+    }
+
+    userTasks = userTasks.map((task,i)=>({
+        ...task,
+        realIndex:i
+    }));
+
+    userTasks.sort((a,b)=>
+        new Date(a.time+"T"+a.date) - new Date(b.time+"T"+b.date)
+    );
+
+    // group by date
     let grouped = {};
-    userTasks.forEach((t,i) => {
-        if (!grouped[t.time]) grouped[t.time] = [];
-        grouped[t.time].push({...t, index:i});
+
+    userTasks.forEach(task=>{
+        // if(task.status === "delete") return;
+
+        if(!grouped[task.time]) grouped[task.time] = [];
+
+        grouped[task.time].push(task);
     });
 
     let now = new Date();
     let html = `<div id="ListingAllTask">`;
 
-    for (let date in grouped) {
+    for(let date in grouped){
 
-        let checkDate = new Date(date);
-        let style = checkDate < now ? `style="background:#ffeeee"` : "";
-
-        html += `<fieldset ${style}>
+        html += `<fieldset>
         <legend>&nbsp;${date}&nbsp;</legend>`;
 
-        grouped[date].forEach(task => {
+       grouped[date].forEach(task => {
 
-        html += `
-        <form class="theListForm" data-index="${task.index}">
-            <div id="TaskListTiming">
-                <div id="taskTime">${task.date}</div>
+    let taskDateTime = new Date(task.time + "T" + task.date);
+
+    // change pending → due if time passed
+    if (task.status === "pending" && taskDateTime < now) {
+        task.status = "due";
+    }
+
+    let style = "";
+
+    if (task.status === "complete") {
+        style = "background:#ecffeb;";
+        // green
+    }
+
+    if (task.status === "pending") {
+        style = "background:#ebf3ff;";
+        // blue
+    }
+
+    if (task.status === "due") {
+        style = "background:#ffecec;";
+        // red
+    }
+
+    if (task.status === "delete") {
+        style = "background:#ececec;";
+        // lightBlack
+    }
+
+    html += `
+    <form class="theListForm" data-index="${task.realIndex}" style="${style};border-radius:10px;">
+
+        <div id="TaskListTiming">
+            <div id="taskTime">${task.date}</div>
+        </div>
+
+        <div id="theInnerTask">
+
+            <div id="theInnerTaskInputs">
+
+                <input type="text" class="title"
+                value="${task.title}" readonly/>
+
+                <textarea class="description"
+                rows="5" readonly>${task.desc}</textarea>
+
             </div>
 
-            <div id="theInnerTask">
+            <div id="listedOptBtns">
 
-                <div id="theInnerTaskInputs">
+                <button type="button" onclick="editTask(this,AllTask)">
+                    <span class="material-icons">edit</span>
+                </button>
 
-                    <input type="text" class="title"
-                    value="${task.title}" readonly/>
+                <button type="button" onclick="completeTask(this,AllTask)">
+                    <span class="material-icons">event_available</span>
+                </button>
 
-                    <textarea class="description"
-                    rows="5" readonly>${task.desc}</textarea>
+                <button type="button" onclick="BackPendingTask(this,AllTask)">
+                    <span class="material-icons">event_busy</span>
+                </button>
 
-                </div>
-
-                <div id="listedOptBtns">
-
-                    <button type="button" onclick="editTask(this)">
-                        <span class="material-icons">edit</span>
-                    </button>
-
-                </div>
+                <button type="button" onclick="deleteTask(this,AllTask)">
+                    <span class="material-icons">delete</span>
+                </button>
 
             </div>
-        </form>`;
-        });
 
-        html += `</fieldset>`;
+        </div>
+
+    </form>`;
+});
+
+    html += `</fieldset>`;
     }
 
     html += `</div>`;
+
     container.innerHTML = html;
 }
 
-function editTask(btn){
+// Base function
+
+function editTask(btn) {
 
     let form = btn.closest("form");
     let title = form.querySelector(".title");
     let desc = form.querySelector(".description");
     let icon = btn.querySelector("span");
 
-    if(icon.innerText === "edit"){
+    if (icon.innerText === "edit") {
 
         title.removeAttribute("readonly");
         desc.removeAttribute("readonly");
 
         icon.innerText = "save";
 
-    }else{
+        title.style.backgroundColor = "#fff"
+        desc.style.backgroundColor = "#fff"
+        title.focus()
+
+    } else {
 
         let index = form.dataset.index;
         let userId = parseInt(document.cookie.slice(3,))
@@ -279,42 +281,458 @@ function editTask(btn){
 
         localStorage.setItem("Tasks", JSON.stringify(tasks));
 
-        title.setAttribute("readonly",true);
-        desc.setAttribute("readonly",true);
+        title.style.backgroundColor = "#f7f7f7"
+        desc.style.backgroundColor = "#f7f7f7"
+
+        title.setAttribute("readonly", true);
+        desc.setAttribute("readonly", true);
 
         icon.innerText = "edit";
     }
 }
 
+function completeTask(btn,section){
+
+    let form = btn.closest("form");
+    let index = form.dataset.index;
+
+    let userId = parseInt(document.cookie.slice(3,))
+    let tasks = JSON.parse(localStorage.getItem("Tasks"));
+
+    tasks[userId][index].status = "complete";
+
+    localStorage.setItem("Tasks", JSON.stringify(tasks));
+
+    section();
+}
+
+function deleteTask(btn,section){
+
+    let form = btn.closest("form");
+    let index = form.dataset.index;
+
+    let userId = parseInt(document.cookie.slice(3,))
+    let tasks = JSON.parse(localStorage.getItem("Tasks"));
+
+    tasks[userId][index].status = "delete";
+
+    localStorage.setItem("Tasks", JSON.stringify(tasks));
+
+    section();
+}
+
+function BackPendingTask(btn,section){
+
+    let form = btn.closest("form");
+    let index = form.dataset.index;
+
+    let userId = parseInt(document.cookie.slice(3,))
+    let tasks = JSON.parse(localStorage.getItem("Tasks"));
+
+    tasks[userId][index].status = "pending";
+
+    localStorage.setItem("Tasks", JSON.stringify(tasks));
+
+    section();
+}
+
+// ------------------------------------------------------------
+
 let PendingTask = () => {
+    clearActive()
+
+    document.getElementById("PendingTask").style.color = "#fff"
+    document.getElementById("PendingTask").style.backgroundColor = "#6c7f8e"
+
 
     let id = document.cookie;
-    if (id == '') {
-        Login()
-        return
+    if (!id) {
+        Login();
+        return;
     }
 
-    taskpages.innerHTML = `Pending List`
+    let userId = parseInt(id.slice(3));
+    let tasks = JSON.parse(localStorage.getItem("Tasks")) || [];
+    let userTasks = tasks[userId] || [];
+
+    let container = document.getElementById("taskpages");
+
+    let validTasks = userTasks.filter(t => t.status === "pending");
+
+    if (validTasks.length === 0) {
+    // if (userTasks.length === 0) {
+        container.innerHTML = `
+        <fieldset style="display:flex;align-items: center;justify-content: start;height:400px;">
+            <p style="margin:10px 0 30px;">No Tasks are added</p>
+        </fieldset>`;
+        return;
+    }
+
+    userTasks = userTasks.map((task,i)=>({
+        ...task,
+        realIndex:i
+    }));
+
+    userTasks.sort((a,b)=>
+        new Date(a.time+"T"+a.date) - new Date(b.time+"T"+b.date)
+    );
+
+    // group by date
+    let grouped = {};
+
+    userTasks.forEach(task=>{
+        if(task.status !== "pending") return;
+
+        if(!grouped[task.time]) grouped[task.time] = [];
+
+        grouped[task.time].push(task);
+    });
+
+    let now = new Date();
+    let html = `<div id="ListingAllTask">`;
+
+    for(let date in grouped){
+
+        html += `<fieldset>
+        <legend>&nbsp;${date}&nbsp;</legend>`;
+
+       grouped[date].forEach(task => {
+
+    let taskDateTime = new Date(task.time + "T" + task.date);
+
+    // change pending → due if time passed
+    if (task.status === "pending" && taskDateTime < now) {
+        task.status = "due";
+    }
+
+    let style = "";
+
+    if (task.status === "complete") {
+        style = "background:#ecffeb;";
+        // green
+    }
+
+    if (task.status === "pending") {
+        style = "background:#ebf3ff;";
+        // blue
+    }
+
+    if (task.status === "due") {
+        style = "background:#ffecec;";
+        // red
+    }
+
+    if (task.status === "delete") {
+        style = "background:#ececec;";
+        // lightBlack
+    }
+
+    html += `
+    <form class="theListForm" data-index="${task.realIndex}" style="${style};border-radius:10px;">
+
+        <div id="TaskListTiming">
+            <div id="taskTime">${task.date}</div>
+        </div>
+
+        <div id="theInnerTask">
+
+            <div id="theInnerTaskInputs">
+
+                <input type="text" class="title"
+                value="${task.title}" readonly/>
+
+                <textarea class="description"
+                rows="5" readonly>${task.desc}</textarea>
+
+            </div>
+
+            <div id="listedOptBtns">
+
+                <button type="button" onclick="editTask(this,PendingTask)" title="Edit">
+                    <span class="material-icons">edit</span>
+                </button>
+
+                <button type="button" onclick="completeTask(this,PendingTask)" title="Complete">
+                    <span class="material-icons">event_available</span>
+                </button>
+
+                <button type="button" onclick="deleteTask(this,PendingTask)" title="Delete">
+                    <span class="material-icons">delete</span>
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>`;
+});
+
+    html += `</fieldset>`;
+    }
+
+    html += `</div>`;
+
+    container.innerHTML = html;
 }
 
 let CompletedTask = () => {
+    clearActive()
+
+    document.getElementById("CompletedTask").style.color = "#fff"
+    document.getElementById("CompletedTask").style.backgroundColor = "#6c7f8e"
+
 
     let id = document.cookie;
-    if (id == '') {
-        Login()
-        return
+    if (!id) {
+        Login();
+        return;
     }
 
-    taskpages.innerHTML = `Completed List`
+    let userId = parseInt(id.slice(3));
+    let tasks = JSON.parse(localStorage.getItem("Tasks")) || [];
+    let userTasks = tasks[userId] || [];
+
+    let container = document.getElementById("taskpages");
+
+    let validTasks = userTasks.filter(t => t.status === "complete");
+
+    if (validTasks.length === 0) {
+    // if (userTasks.length === 0) {
+        container.innerHTML = `
+        <fieldset style="display:flex;align-items: center;justify-content: start;height:400px;">
+            <p style="margin:10px 0 30px;">No Tasks are added</p>
+        </fieldset>`;
+        return;
+    }
+
+    userTasks = userTasks.map((task,i)=>({
+        ...task,
+        realIndex:i
+    }));
+
+    userTasks.sort((a,b)=>
+        new Date(a.time+"T"+a.date) - new Date(b.time+"T"+b.date)
+    );
+
+    // group by date
+    let grouped = {};
+
+    userTasks.forEach(task=>{
+        if(task.status !== "complete") return;
+
+        if(!grouped[task.time]) grouped[task.time] = [];
+
+        grouped[task.time].push(task);
+    });
+
+    let now = new Date();
+    let html = `<div id="ListingAllTask">`;
+
+    for(let date in grouped){
+
+        html += `<fieldset>
+        <legend>&nbsp;${date}&nbsp;</legend>`;
+
+       grouped[date].forEach(task => {
+
+    let taskDateTime = new Date(task.time + "T" + task.date);
+
+    // change pending → due if time passed
+    if (task.status === "pending" && taskDateTime < now) {
+        task.status = "due";
+    }
+
+    let style = "";
+
+    if (task.status === "complete") {
+        style = "background:#ecffeb;";
+        // green
+    }
+
+    if (task.status === "pending") {
+        style = "background:#ebf3ff;";
+        // blue
+    }
+
+    if (task.status === "due") {
+        style = "background:#ffecec;";
+        // red
+    }
+
+    if (task.status === "delete") {
+        style = "background:#ececec;";
+        // lightBlack
+    }
+
+    html += `
+    <form class="theListForm" data-index="${task.realIndex}" style="${style};border-radius:10px;">
+
+        <div id="TaskListTiming">
+            <div id="taskTime">${task.date}</div>
+        </div>
+
+        <div id="theInnerTask">
+
+            <div id="theInnerTaskInputs">
+
+                <input type="text" class="title"
+                value="${task.title}" readonly/>
+
+                <textarea class="description"
+                rows="5" readonly>${task.desc}</textarea>
+
+            </div>
+
+            <div id="listedOptBtns">
+
+                <button type="button" onclick="BackPendingTask(this,CompletedTask)" title="Pending">
+                    <span class="material-icons">event_busy</span>
+                </button>
+
+                <button type="button" onclick="deleteTask(this,CompletedTask)" title="Delete">
+                    <span class="material-icons">delete</span>
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>`;
+});
+
+    html += `</fieldset>`;
+    }
+
+    html += `</div>`;
+
+    container.innerHTML = html;
 }
 
 let RemovedTask = () => {
+    clearActive()
+
+    document.getElementById("RemovedTask").style.color = "#fff"
+    document.getElementById("RemovedTask").style.backgroundColor = "#6c7f8e"
 
     let id = document.cookie;
-    if (id == '') {
-        Login()
-        return
+    if (!id) {
+        Login();
+        return;
     }
 
-    taskpages.innerHTML = `Removed`
+    let userId = parseInt(id.slice(3));
+    let tasks = JSON.parse(localStorage.getItem("Tasks")) || [];
+    let userTasks = tasks[userId] || [];
+
+    let container = document.getElementById("taskpages");
+
+    let validTasks = userTasks.filter(t => t.status === "delete");
+
+    if (validTasks.length === 0) {
+    // if (userTasks.length === 0) {
+        container.innerHTML = `
+        <fieldset style="display:flex;align-items: center;justify-content: start;height:400px;">
+            <p style="margin:10px 0 30px;">No Tasks are added</p>
+        </fieldset>`;
+        return;
+    }
+
+    userTasks = userTasks.map((task,i)=>({
+        ...task,
+        realIndex:i
+    }));
+
+    userTasks.sort((a,b)=>
+        new Date(a.time+"T"+a.date) - new Date(b.time+"T"+b.date)
+    );
+
+    // group by date
+    let grouped = {};
+
+    userTasks.forEach(task=>{
+        if(task.status !== "delete") return;
+
+        if(!grouped[task.time]) grouped[task.time] = [];
+
+        grouped[task.time].push(task);
+    });
+
+    let now = new Date();
+    let html = `<div id="ListingAllTask">`;
+
+    for(let date in grouped){
+
+        html += `<fieldset>
+        <legend>&nbsp;${date}&nbsp;</legend>`;
+
+       grouped[date].forEach(task => {
+
+    let taskDateTime = new Date(task.time + "T" + task.date);
+
+    // change pending → due if time passed
+    if (task.status === "pending" && taskDateTime < now) {
+        task.status = "due";
+    }
+
+    let style = "";
+
+    if (task.status === "complete") {
+        style = "background:#ecffeb;";
+        // green
+    }
+
+    if (task.status === "pending") {
+        style = "background:#ebf3ff;";
+        // blue
+    }
+
+    if (task.status === "due") {
+        style = "background:#ffecec;";
+        // red
+    }
+
+    if (task.status === "delete") {
+        style = "background:#ececec;";
+        // lightBlack
+    }
+
+    html += `
+    <form class="theListForm" data-index="${task.realIndex}" style="${style};border-radius:10px;">
+
+        <div id="TaskListTiming">
+            <div id="taskTime">${task.date}</div>
+        </div>
+
+        <div id="theInnerTask">
+
+            <div id="theInnerTaskInputs">
+
+                <input type="text" class="title"
+                value="${task.title}" readonly/>
+
+                <textarea class="description"
+                rows="5" readonly>${task.desc}</textarea>
+
+            </div>
+
+            <div id="listedOptBtns">
+
+                
+                <button type="button" onclick="BackPendingTask(this,RemovedTask)" title="Restore">
+                    <span class="material-icons">undo</span>
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>`;
+});
+
+    html += `</fieldset>`;
+    }
+
+    html += `</div>`;
+
+    container.innerHTML = html;
 }

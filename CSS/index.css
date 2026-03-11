@@ -17,12 +17,18 @@ body {
     padding: 0;
 }
 
-body {
-    background-color: #f8f8f8;
-
-}
 
 /* ---- Basic ---- */
+/* 
+html{
+
+    filter: invert(100%);
+} */
+
+body {
+    background-color: #f8f8f8;
+}
+
 .hidden {
     display: none;
 }
@@ -103,9 +109,8 @@ body {
     cursor: pointer;
 }
 
-#visibleOpt button:hover {
+#visibleOpt button:hover{
     color: #f2f2f2;
-    /* background-color: #6C7F8E; */
     background-color: #6c7f8ed0;
 }
 
@@ -287,6 +292,8 @@ fieldset {
     border-color: 1px solid #6C7F8E;
     border-radius: 5px;
     background-color: #fff;
+    /* background-color: transparent; */
+    
     width: 100%;
     min-width: 300px;
     margin-bottom: 10px;
@@ -298,7 +305,7 @@ fieldset form {
 }
 
 form {
-    padding: 20px 0 30px 0;
+    padding: 25px 0 25px 0;
     display: flex;
     flex-direction: column;
     width: 30%;
@@ -470,7 +477,11 @@ hr {
 }
 
 #taskTime{
+    font-family: "Montserrat", sans-serif;
+    font-family: "Sora", sans-serif;
+    font-weight: 600;
     padding:8px 10px;
+    margin-left: 10px;
 }
 
 #theInnerTask{
@@ -485,21 +496,36 @@ hr {
     width:100%;
 }
 
+#theListedEditErr {
+    color:red;
+    margin-block-end: -15px;
+    margin-block-start: -5px;
+}
+
 #theInnerTaskInputs input{
-    /* width:70%; */
+    background-color: #f7f7f7;
     margin-bottom:5px;
+}
+
+#theInnerTaskInputs textarea{
+    background-color: #f7f7f7;
 }
 
 #listedOptBtns{
     display:flex;
     flex-direction: column;
     /* width:40%; */
+    margin-right: 15px;
 }
 
 #listedOptBtns button{
     margin:0 0 5px 5px;
     padding: 8px 8px 5px 8px;
     /* width:40%; */
+}
+
+#listedOptBtns button span{
+    font-size: 18px;
 }
 
 #theInnerTask textarea{
@@ -636,16 +662,24 @@ hr {
     #listedOptBtns{
         flex-direction: row;
         justify-content: end;
+            margin-right: 0;
+
     }
+
+    #theListedEditErr {
+        margin-block-start: 8px;
+        margin-block-end: -8px;
+    }
+
 
     #listedOptBtns button{
         margin:0 0 5px 5px;
-        padding: 8px 8px 5px 8px;
+        /* padding: 0px 0px -5px 0px; */
         /* width:40%; */
     }
 
     #listedOptBtns button span{
-        font-size: 15px;
+        font-size: 18px;
     }
 
 

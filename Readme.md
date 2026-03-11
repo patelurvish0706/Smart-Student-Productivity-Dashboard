@@ -1,8 +1,8 @@
-Smart stuednt productivity dashboard
+Smart student productivity dashboard
 
 🟢 live : https://patelurvish0706.github.io/Smart-Student-Productivity-Dashboard
 
-Building a fully functional web application including authentication, task management,
+Build a fully functional web application including authentication, task management,
 API integration, OOP structure, async JavaScript, DOM manipulation, and local storage.
 
 1. User Authentication (Register, Login, Logout using LocalStorage)
