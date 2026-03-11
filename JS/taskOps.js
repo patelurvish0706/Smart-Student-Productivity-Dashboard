@@ -86,7 +86,7 @@ let AddTask = () => {
 }
 AddTask()
 
-let AllTask = () => {
+let AllTaskOrignal = () => {
 
     let id = document.cookie;
     if (id == '') {
@@ -140,9 +140,9 @@ let AllTask = () => {
 
             <div id="theInnerTask">
                 <div id="theInnerTaskInputs" >
-                    <input type="text" id="title" name="title" value="${task.title}" />
+                    <input type="text" id="title" name="title" value="${task.title}" readonly/>
                     
-                    <textarea id="description" name="description" rows="5" >${task.desc}</textarea>
+                    <textarea id="description" name="description" rows="5" readonly >${task.desc}</textarea>
                     
                 </div>
                 
@@ -152,7 +152,7 @@ let AllTask = () => {
                         <span class="material-icons">edit</span>
                     </button>
 
-                    <button type="submit">
+                    <button type="button">
                         <span class="material-icons">check</span>
                     </button>
 
@@ -175,66 +175,115 @@ let AllTask = () => {
 
     container.innerHTML = html;
 
-    // }
-    /*
-    taskpages.innerHTML = ` 
-        <div id="ListingAllTask">
-                <fieldset>
-                    <legend>&nbsp;04 / 02 / 2026&nbsp;</legend>
+}
 
-                    <form style="display: flex;flex-direction: row; width: 80%;">
-                        <div id="TaskTiming" style="width: 30%;text-align: center;">
-                            <div id="taskTime" style="padding: 8px 10px;">03:55 AM</div>
-                        </div>
-                        <div id="theTask" style="display:flex;flex-direction: column;width: 100%;">
-                            <div style="display: flex; width: 100%;">
-                                <input style="width: 70%;margin-bottom: 5px;" type="text" id="title" name="title" placeholder="Complete Whole Project"/>
-                                <div style="display: flex; width: 40%;">
-                               
-                                    <button style="margin: 0 0 5px 5px;width: 50%;" type="button" > 
-                                        <span class="material-icons">edit</span>
-                                    </button>
 
-                                    <button style="margin: 0 0 5px 5px;width: 50%;" type="submit" >
-                                        <span class="material-icons">check</span>
-                                    </button>
+let AllTask = () => {
 
-                                    <button style="margin: 0 0 5px 5px;width: 50%;" type="reset" >
-                                        <span class="material-icons">delete</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <textarea type="text" id="description" name="description" rows="5" style="resize: vertical;" placeholder="Student Productivity System is pending. also need to add all functionallities in real." ></textarea>
-                        </div>
-                    </form>
+    let id = document.cookie;
+    if (id == '') {
+        Login()
+        return
+    }
 
-                    <form style="display: flex;flex-direction: row; width: 80%;">
-                        <div id="TaskTiming" style="width: 30%;text-align: center;">
-                            <div id="taskTime" style="padding: 8px 10px;">04:20 AM</div>
-                        </div>
-                        <div id="theTask" style="display:flex;flex-direction: column;width: 100%;">
-                            <div style="display: flex; width: 100%;">
-                                <input style="width: 70%;margin-bottom: 5px;" type="text" id="title" name="title" value="Write subject Title here." disabled/>
-                                <div style="display: flex; width: 40%;">
-                                    <button style="margin: 0 0 5px 5px;width: 50%;" type="button" >Edit</button>
-                                    <button style="margin: 0 0 5px 5px;width: 50%;" type="submit" >Completed</button>
-                                    <button style="margin: 0 0 5px 5px;width: 50%;" type="reset" >Remove</button>
-                                </div>
-                            </div>
-                            <textarea type="text" id="description" name="description" rows="5" style="resize: vertical;" placeholder="Write Description about Task here." ></textarea>
-                        </div>
-                    </form>
-                </fieldset>
+    let userId = parseInt(document.cookie.slice(3,))
+    let tasks = JSON.parse(localStorage.getItem("Tasks")) || [];
+    let userTasks = tasks[userId] || [];
 
-                <fieldset>
-                    <legend>&nbsp;05 / 02 / 2026&nbsp;</legend>
-                
-                </fieldset>
-                <fieldset>
-                    <legend>&nbsp;06 / 02 / 2026&nbsp;</legend>
-                
-                </fieldset>
-            </div>` */
+    let container = document.getElementById("taskpages");
+
+    userTasks.sort((a, b) => {
+        let d1 = new Date(a.time + " " + a.date);
+        let d2 = new Date(b.time + " " + b.date);
+        return d1 - d2;
+    });
+
+    let grouped = {};
+    userTasks.forEach((t,i) => {
+        if (!grouped[t.time]) grouped[t.time] = [];
+        grouped[t.time].push({...t, index:i});
+    });
+
+    let now = new Date();
+    let html = `<div id="ListingAllTask">`;
+
+    for (let date in grouped) {
+
+        let checkDate = new Date(date);
+        let style = checkDate < now ? `style="background:#ffeeee"` : "";
+
+        html += `<fieldset ${style}>
+        <legend>&nbsp;${date}&nbsp;</legend>`;
+
+        grouped[date].forEach(task => {
+
+        html += `
+        <form class="theListForm" data-index="${task.index}">
+            <div id="TaskListTiming">
+                <div id="taskTime">${task.date}</div>
+            </div>
+
+            <div id="theInnerTask">
+
+                <div id="theInnerTaskInputs">
+
+                    <input type="text" class="title"
+                    value="${task.title}" readonly/>
+
+                    <textarea class="description"
+                    rows="5" readonly>${task.desc}</textarea>
+
+                </div>
+
+                <div id="listedOptBtns">
+
+                    <button type="button" onclick="editTask(this)">
+                        <span class="material-icons">edit</span>
+                    </button>
+
+                </div>
+
+            </div>
+        </form>`;
+        });
+
+        html += `</fieldset>`;
+    }
+
+    html += `</div>`;
+    container.innerHTML = html;
+}
+
+function editTask(btn){
+
+    let form = btn.closest("form");
+    let title = form.querySelector(".title");
+    let desc = form.querySelector(".description");
+    let icon = btn.querySelector("span");
+
+    if(icon.innerText === "edit"){
+
+        title.removeAttribute("readonly");
+        desc.removeAttribute("readonly");
+
+        icon.innerText = "save";
+
+    }else{
+
+        let index = form.dataset.index;
+        let userId = parseInt(document.cookie.slice(3,))
+        let tasks = JSON.parse(localStorage.getItem("Tasks"));
+
+        tasks[userId][index].title = title.value;
+        tasks[userId][index].desc = desc.value;
+
+        localStorage.setItem("Tasks", JSON.stringify(tasks));
+
+        title.setAttribute("readonly",true);
+        desc.setAttribute("readonly",true);
+
+        icon.innerText = "edit";
+    }
 }
 
 let PendingTask = () => {

@@ -443,8 +443,16 @@ hr {
     display: none;
 }
 
-
 /* Listing Tasks  */
+
+#ListingAllTask fieldset legend{
+    background-color: #fafafa;
+    border: 1px solid #657886;
+    border-radius: 5px;
+    padding: 2px 10px; 
+
+}
+
 .material-icons {
         font-size: 20px;
     }

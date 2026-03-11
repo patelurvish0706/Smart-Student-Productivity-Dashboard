@@ -375,7 +375,7 @@
     let theWeather = document.getElementById("theWeather")
 
     let quotesFetching = async () => {
-        let response = await fetch('https://quoteslate.vercel.app/api/quotes/random').then(async (data) => await data.json()).then((data) => quotes.innerHTML = `" ` + data.quote + ` "<p>&nbsp;&nbsp;&nbsp;- ` + data.author + `<p/>`)
+        let response = await fetch('https://quoteslate.vercel.app/api/quotes/random').then(async (data) => await data.json()).then((data) => quotes.innerHTML = `"` + data.quote + `"<p>&nbsp;&nbsp;&nbsp;- ` + data.author + `<p/>`)
     }
     quotesFetching()
 
