@@ -126,7 +126,13 @@ function deleteEverything() {
 
 function deleteTasks() {
     if (confirm("Are you sure to delete All Tasks?")) {
-        localStorage.removeItem("Tasks");
+
+        let tasks = JSON.parse(localStorage.getItem("Tasks")) || [];
+        
+        tasks = tasks.map(() => []);   // keep same users but empty tasks
+
+        localStorage.setItem("Tasks", JSON.stringify(tasks));
+    
         document.getElementById('removedTaskAlert').style.display="flex"
         setTimeout(() => {
             document.getElementById('removedTaskAlert').style.display="none"
@@ -135,20 +141,23 @@ function deleteTasks() {
         console.log("User clicked Cancel");
     }
 }
-// TASKMANAGEMENT - Listing task
 
-                        document.querySelector('.IntroContainer').addEventListener('click', () => {
-                        if(document.getElementById('mainOpts').style.display === "flex"){
-                                document.getElementById('mainOpts').style.display = "none" 
-                                
-                            }
-                        });
-                        document.querySelector('.taskManagement').addEventListener('click', () => {
-                            if(document.getElementById('mainOpts').style.display === "flex"){
-                                document.getElementById('mainOpts').style.display = "none" 
-                            }
-                            
-                        });
+// Page click hides Menu
+
+document.querySelector('.IntroContainer').addEventListener('click', () => {
+if(document.getElementById('mainOpts').style.display === "flex"){
+    document.getElementById('mainOpts').style.display = "none" 
+    
+}
+});
+document.querySelector('.taskManagement').addEventListener('click', () => {
+    if(document.getElementById('mainOpts').style.display === "flex"){
+        document.getElementById('mainOpts').style.display = "none" 
+    }
+    
+});
+
+// TASKMANAGEMENT - Listing task
 
 document.getElementById('AddTask').addEventListener('click', () => {
     AddTask()

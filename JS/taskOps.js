@@ -1,7 +1,7 @@
 let AddTask = () => {
 
     const date = new Date();
-    let validdate = date.getFullYear()+"-"+(date.getMonth() + 1).toString().padStart(2,"0")+"-"+date.getDate().toString().padStart(2,"0");
+    let validdate = date.getFullYear() + "-" + (date.getMonth() + 1).toString().padStart(2, "0") + "-" + date.getDate().toString().padStart(2, "0");
 
     taskpages.innerHTML = `
     <div id="addingTask">
@@ -31,9 +31,9 @@ let AddTask = () => {
                 </fieldset>
             </div>`
 
-        let AddingTaskForm = document.getElementById('AddingTaskForm')
+    let AddingTaskForm = document.getElementById('AddingTaskForm')
 
-        AddingTaskForm.addEventListener("submit", (e) => {
+    AddingTaskForm.addEventListener("submit", (e) => {
         e.preventDefault()
 
         if (document.cookie === '') {
@@ -54,33 +54,33 @@ let AddTask = () => {
             addFormErr.innerText = "All * fields are required";
             return;
         }
-        
+
         const selectedDate = new Date(deadlineDate + "T" + deadlineTime);
         const currentDate = new Date();
 
         if (selectedDate <= currentDate) {
             addFormErr.innerText = "Deadline must be future date and time";
-            return ;
+            return;
         }
 
         console.log("submitted");
 
-        let thetask = new Task(title, description , deadlineDate, deadlineTime)
+        let thetask = new Task(title, description, deadlineDate, deadlineTime)
         console.log(thetask);
-        
+
         let msg = DOit.addTask(thetask)
 
         addFormErr.innerHTML = `<p style='color:green'>${msg}</p>`;
 
         AddingTaskForm.reset();
-        
+
         setTimeout(() => {
             // showLogin()
             addFormErr.innerHTML = ``;
         }, 1000);
         // console.log(title, description , deadlineDate, deadlineTime);
-        
-        
+
+
     })
 
 }
@@ -97,36 +97,41 @@ let AllTask = () => {
     let userId = parseInt(document.cookie.slice(3,))
 
 
-let tasks = JSON.parse(localStorage.getItem("Tasks")) || [];
-let userTasks = tasks[userId] || [];
+    let tasks = JSON.parse(localStorage.getItem("Tasks")) || [];
+    let userTasks = tasks[userId] || [];
 
-let container = document.getElementById("taskpages");
+    let container = document.getElementById("taskpages");
 
-// sort by date and time (earliest = highest priority)
-userTasks.sort((a,b)=>{
-    let d1 = new Date(a.time + " " + a.date);
-    let d2 = new Date(b.time + " " + b.date);
-    return d1 - d2;
-});
+    // sort by date and time (earliest = highest priority)
+    userTasks.sort((a, b) => {
+        let d1 = new Date(a.time + " " + a.date);
+        let d2 = new Date(b.time + " " + b.date);
+        return d1 - d2;
+    });
 
-let grouped = {};
+    let grouped = {};
 
-userTasks.forEach(t=>{
-    if(!grouped[t.time]){
-        grouped[t.time] = [];
-    }
-    grouped[t.time].push(t);
-});
-let html = `<div id="ListingAllTask">`;
+    userTasks.forEach(t => {
+        if (!grouped[t.time]) {
+            grouped[t.time] = [];
+        }
+        grouped[t.time].push(t);
+    });
+    let html = `<div id="ListingAllTask">`;
 
-for(let date in grouped){
+    if(JSON.parse(localStorage.getItem("Tasks")) == "" || JSON.parse(localStorage.getItem("Tasks")) == null ){
+        html += `<fieldset style="height:400px;justify-content:start;">
+                    <p style="margin:10px 0 30px;">No Tasks are added</p>
+                </fieldset>`;
+    }else{
 
-    html += `
-    <fieldset>
-        <legend>&nbsp;${date}&nbsp;</legend>
-    `;
+    for (let date in grouped) {
 
-    grouped[date].forEach(task=>{
+    html += `<fieldset>
+            <legend>&nbsp;${date}&nbsp;</legend>
+            `;
+
+    grouped[date].forEach(task => {
         html += `
         <form class="theListForm" >
             <div id="TaskListTiming" >
@@ -160,16 +165,17 @@ for(let date in grouped){
             </div>
         </form>
         `;
-    });
+        });
 
-    html += `</fieldset>`;
-}
+        html += `</fieldset>`;
+    }
 
-html += `</div>`;
+    }
+    html += `</div>`;
 
-container.innerHTML = html;
+    container.innerHTML = html;
 
-// }
+    // }
     /*
     taskpages.innerHTML = ` 
         <div id="ListingAllTask">
