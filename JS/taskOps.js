@@ -134,7 +134,7 @@ let AllTask = () => {
     if (userTasks.length === 0) {
         container.innerHTML = `
         <fieldset style="display:flex;align-items: center;justify-content: start;height:400px;">
-            <p style="margin:10px 0 30px;">No Tasks are added</p>
+            <p style="margin:10px 0 30px;">Your task list is waiting for its first mission.</p>
         </fieldset>`;
         return;
     }
@@ -363,7 +363,7 @@ let PendingTask = () => {
     // if (userTasks.length === 0) {
         container.innerHTML = `
         <fieldset style="display:flex;align-items: center;justify-content: start;height:400px;">
-            <p style="margin:10px 0 30px;">No Tasks are added</p>
+            <p style="margin:10px 0 30px;">Nothing waiting — you're on track.</p>
         </fieldset>`;
         return;
     }
@@ -500,7 +500,7 @@ let CompletedTask = () => {
     // if (userTasks.length === 0) {
         container.innerHTML = `
         <fieldset style="display:flex;align-items: center;justify-content: start;height:400px;">
-            <p style="margin:10px 0 30px;">No Tasks are added</p>
+            <p style="margin:10px 0 30px;">Complete your task first.</p>
         </fieldset>`;
         return;
     }
@@ -632,7 +632,7 @@ let RemovedTask = () => {
     // if (userTasks.length === 0) {
         container.innerHTML = `
         <fieldset style="display:flex;align-items: center;justify-content: start;height:400px;">
-            <p style="margin:10px 0 30px;">No Tasks are added</p>
+            <p style="margin:10px 0 30px;">Nothing removed - all tasks are safe.</p>
         </fieldset>`;
         return;
     }
