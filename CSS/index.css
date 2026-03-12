@@ -465,6 +465,7 @@ hr {
     }
 
 .theListForm{
+    margin: 5px 0;
     display:flex;
     flex-direction:row;
     width:90%;
@@ -496,11 +497,18 @@ hr {
     width:100%;
 }
 
-#theListedEditErr {
-    color:red;
-    margin-block-end: -15px;
-    margin-block-start: -5px;
+
+#theInnerTaskInputs div{
+    display: flex;
+    flex-direction: column;
 }
+
+#theInnerTaskInputs #timeDateContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
 
 #theInnerTaskInputs input{
     background-color: #f7f7f7;
@@ -509,6 +517,12 @@ hr {
 
 #theInnerTaskInputs textarea{
     background-color: #f7f7f7;
+}
+
+#theInnerTaskInputs input[type="time"],
+#theInnerTaskInputs input[type="date"]{
+    background-color: #f7f7f7;
+    background-color: #fff;
 }
 
 #listedOptBtns{
@@ -666,12 +680,6 @@ hr {
 
     }
 
-    #theListedEditErr {
-        margin-block-start: 8px;
-        margin-block-end: -8px;
-    }
-
-
     #listedOptBtns button{
         margin:0 0 5px 5px;
         /* padding: 0px 0px -5px 0px; */
@@ -682,6 +690,36 @@ hr {
         font-size: 18px;
     }
 
+    #theInnerTaskInputs #timeDateContainer{
+        flex-direction: row;
+        gap: 5px;
+    }
 
+    #theInnerTaskInputs input[type="time"]{
+       background-color: #f7f7f7;
+       background-color: #fff;
+       width: 30%;
+    }
+    
+    #theInnerTaskInputs input[type="date"]{
+        background-color: #f7f7f7;
+        background-color: #fff;
+        /* width: 50%; */
+        width: stretch;
+    }
 
 }
+
+
+        /* <div id="theInnerTaskInputs">
+            <div>
+                <input type="text" class="title" value="${task.title}" readonly/>
+                <textarea style="margin-bottom:5px;" class="description" rows="5" readonly>${task.desc}</textarea>
+            </div>
+
+             <div id="timeDateContainer">
+                <input type="time" class="taskTime" value="${task.date}" hidden>
+                <input type="date" class="taskDate" min=${validdate} value="${task.time}" hidden>
+            </div>
+        
+        </div> */

@@ -198,6 +198,9 @@ let AllTask = () => {
         // lightBlack
     }
 
+    const date = new Date();
+    let validdate = date.getFullYear() + "-" + (date.getMonth() + 1).toString().padStart(2, "0") + "-" + date.getDate().toString().padStart(2, "0");
+
     html += `
     <form class="theListForm" data-index="${task.realIndex}" style="${style};border-radius:10px;">
 
@@ -206,16 +209,19 @@ let AllTask = () => {
         </div>
 
         <div id="theInnerTask">
-
-            <div id="theInnerTaskInputs">
-
-                <input type="text" class="title"
-                value="${task.title}" readonly/>
-
-                <textarea class="description"
-                rows="5" readonly>${task.desc}</textarea>
-
+        
+        <div id="theInnerTaskInputs">
+            <div>
+                <input type="text" class="title" value="${task.title}" readonly />
+                <textarea style="margin-bottom:5px;" class="description" rows="5" readonly >${task.desc}</textarea>
             </div>
+
+             <div id="timeDateContainer">
+                <input type="time" class="taskTime" value="${task.date}" hidden>
+                <input type="date" class="taskDate" min=${validdate} value="${task.time}" hidden>
+            </div>
+        
+        </div>
 
             <div id="listedOptBtns">
 
@@ -252,42 +258,169 @@ let AllTask = () => {
 
 // Base function
 
-function editTask(btn) {
+function editTassk(btn){
 
     let form = btn.closest("form");
-    let title = form.querySelector(".title");
-    let desc = form.querySelector(".description");
-    let icon = btn.querySelector("span");
+    // let fieldset = 
+    console.log(form);
+    let fieldset = form.closest("fieldset")
+    console.log(fieldset);
 
-    if (icon.innerText === "edit") {
+    
+
+    let title = form.querySelector(".title");
+    let desc  = form.querySelector(".description");
+    let date  = form.querySelector(".taskDate");
+    let time  = form.querySelector(".taskTime");
+
+    let icon  = btn.querySelector("span");
+
+    // create or find error element
+    let err = form.querySelector(".editErr");
+
+    if(!err){
+        err = document.createElement("p");
+        err.className = "editErr";
+        err.style.color = "red";
+        err.style.margin = "0 0 5px 8px";
+        fieldset.prepend(err);   // add at top of form
+    }
+
+    if(icon.innerText === "edit"){
+
+        err.innerText = "";
 
         title.removeAttribute("readonly");
         desc.removeAttribute("readonly");
 
+        date.hidden = false;
+        time.hidden = false;
+
+        title.style.background = "#fff";
+        desc.style.background = "#fff";
+
         icon.innerText = "save";
+        title.focus();
+    }
 
-        title.style.backgroundColor = "#fff"
-        desc.style.backgroundColor = "#fff"
-        title.focus()
+    else{
 
-    } else {
+        // validation
+        if(
+            title.value.trim() === "" ||
+            desc.value.trim() === "" ||
+            date.value === "" ||
+            time.value === ""
+        ){
+            err.innerText = "All fields are required";
+            return;
+        }
+
+        err.innerText = "";
 
         let index = form.dataset.index;
-        let userId = parseInt(document.cookie.slice(3,))
+        let userId = parseInt(document.cookie.slice(3));
         let tasks = JSON.parse(localStorage.getItem("Tasks"));
 
         tasks[userId][index].title = title.value;
-        tasks[userId][index].desc = desc.value;
+        tasks[userId][index].desc  = desc.value;
+        tasks[userId][index].time  = date.value;
+        tasks[userId][index].date  = time.value;
 
         localStorage.setItem("Tasks", JSON.stringify(tasks));
 
-        title.style.backgroundColor = "#f7f7f7"
-        desc.style.backgroundColor = "#f7f7f7"
+        title.setAttribute("readonly",true);
+        desc.setAttribute("readonly",true);
 
-        title.setAttribute("readonly", true);
-        desc.setAttribute("readonly", true);
+        date.hidden = true;
+        time.hidden = true;
+
+        title.style.background="#f7f7f7";
+        desc.style.background="#f7f7f7";
 
         icon.innerText = "edit";
+
+        AllTask();
+    }
+}
+
+function editTask(btn){
+
+    let form = btn.closest("form");
+    let fieldset = form.closest("fieldset");
+
+    let title = form.querySelector(".title");
+    let desc  = form.querySelector(".description");
+    let date  = form.querySelector(".taskDate");
+    let time  = form.querySelector(".taskTime");
+
+    let icon  = btn.querySelector("span");
+
+    // find error element in fieldset
+    let err = fieldset.querySelector(".editErr");
+
+    // create only if not exist
+    if(!err){
+        err = document.createElement("p");
+        err.className = "editErr";
+        err.style.color = "red";
+        err.style.margin = "0 0 5px 8px";
+        fieldset.prepend(err);
+    }
+
+    if(icon.innerText === "edit"){
+
+        err.innerText = "";
+
+        title.removeAttribute("readonly");
+        desc.removeAttribute("readonly");
+
+        date.hidden = false;
+        time.hidden = false;
+
+        title.style.background = "#fff";
+        desc.style.background = "#fff";
+
+        icon.innerText = "save";
+        title.focus();
+    }
+    else{
+
+        if(
+            title.value.trim() === "" ||
+            desc.value.trim() === "" ||
+            date.value === "" ||
+            time.value === ""
+        ){
+            err.innerText = "All fields are required";
+            return;
+        }
+
+        err.innerText = "";
+
+        let index = form.dataset.index;
+        let userId = parseInt(document.cookie.slice(3));
+        let tasks = JSON.parse(localStorage.getItem("Tasks"));
+
+        tasks[userId][index].title = title.value;
+        tasks[userId][index].desc  = desc.value;
+        tasks[userId][index].time  = date.value;
+        tasks[userId][index].date  = time.value;
+
+        localStorage.setItem("Tasks", JSON.stringify(tasks));
+
+        title.setAttribute("readonly",true);
+        desc.setAttribute("readonly",true);
+
+        date.hidden = true;
+        time.hidden = true;
+
+        title.style.background="#f7f7f7";
+        desc.style.background="#f7f7f7";
+
+        icon.innerText = "edit";
+
+        AllTask();
     }
 }
 
@@ -427,6 +560,9 @@ let PendingTask = () => {
         // lightBlack
     }
 
+    const date = new Date();
+    let validdate = date.getFullYear() + "-" + (date.getMonth() + 1).toString().padStart(2, "0") + "-" + date.getDate().toString().padStart(2, "0");
+
     html += `
     <form class="theListForm" data-index="${task.realIndex}" style="${style};border-radius:10px;">
 
@@ -437,13 +573,16 @@ let PendingTask = () => {
         <div id="theInnerTask">
 
             <div id="theInnerTaskInputs">
+            <div>
+                <input type="text" class="title" value="${task.title}" readonly/>
+                <textarea style="margin-bottom:5px;" class="description" rows="5" readonly>${task.desc}</textarea>
+            </div>
 
-                <input type="text" class="title"
-                value="${task.title}" readonly/>
-
-                <textarea class="description"
-                rows="5" readonly>${task.desc}</textarea>
-
+             <div id="timeDateContainer">
+                <input type="time" class="taskTime" value="${task.date}" hidden>
+                <input type="date" class="taskDate" min=${validdate} value="${task.time}" hidden>
+            </div>
+        
             </div>
 
             <div id="listedOptBtns">
@@ -564,6 +703,10 @@ let CompletedTask = () => {
         // lightBlack
     }
 
+    const date = new Date();
+    let validdate = date.getFullYear() + "-" + (date.getMonth() + 1).toString().padStart(2, "0") + "-" + date.getDate().toString().padStart(2, "0");
+
+
     html += `
     <form class="theListForm" data-index="${task.realIndex}" style="${style};border-radius:10px;">
 
@@ -574,14 +717,17 @@ let CompletedTask = () => {
         <div id="theInnerTask">
 
             <div id="theInnerTaskInputs">
-
-                <input type="text" class="title"
-                value="${task.title}" readonly/>
-
-                <textarea class="description"
-                rows="5" readonly>${task.desc}</textarea>
-
+            <div>
+                <input type="text" class="title" value="${task.title}" readonly/>
+                <textarea style="margin-bottom:5px;" class="description" rows="5" readonly>${task.desc}</textarea>
             </div>
+
+             <div id="timeDateContainer">
+                <input type="time" class="taskTime" value="${task.date}" hidden>
+                <input type="date" class="taskDate" min=${validdate} value="${task.time}" hidden>
+            </div>
+        
+        </div>
 
             <div id="listedOptBtns">
 
@@ -706,14 +852,13 @@ let RemovedTask = () => {
         <div id="theInnerTask">
 
             <div id="theInnerTaskInputs">
-
-                <input type="text" class="title"
-                value="${task.title}" readonly/>
-
-                <textarea class="description"
-                rows="5" readonly>${task.desc}</textarea>
-
+            <div>
+                <input type="text" class="title" value="${task.title}" readonly/>
+                <textarea style="margin-bottom:5px;" class="description" rows="5" readonly>${task.desc}</textarea>
             </div>
+
+        
+        </div>
 
             <div id="listedOptBtns">
 
