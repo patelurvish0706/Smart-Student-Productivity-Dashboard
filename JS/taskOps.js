@@ -282,7 +282,7 @@ function editTassk(btn){
         err = document.createElement("p");
         err.className = "editErr";
         err.style.color = "red";
-        err.style.margin = "0 0 5px 8px";
+        err.style.margin = "0";
         fieldset.prepend(err);   // add at top of form
     }
 
@@ -364,8 +364,11 @@ function editTask(btn){
         err = document.createElement("p");
         err.className = "editErr";
         err.style.color = "red";
-        err.style.margin = "0 0 5px 8px";
-        fieldset.prepend(err);
+        err.style.display = "none";
+        
+
+        // err.style.margin = "0 0 5px 8px";
+        form.prepend(err);
     }
 
     if(icon.innerText === "edit"){
@@ -380,6 +383,7 @@ function editTask(btn){
 
         title.style.background = "#fff";
         desc.style.background = "#fff";
+        err.style.display = "none";
 
         icon.innerText = "save";
         title.focus();
@@ -392,7 +396,8 @@ function editTask(btn){
             date.value === "" ||
             time.value === ""
         ){
-            err.innerText = "All fields are required";
+            err.style.display = "block";
+            err.innerText = "All *fields are required";
             return;
         }
 
@@ -417,6 +422,7 @@ function editTask(btn){
 
         title.style.background="#f7f7f7";
         desc.style.background="#f7f7f7";
+        err.style.display = "none";
 
         icon.innerText = "edit";
 
